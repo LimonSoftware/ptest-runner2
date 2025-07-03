@@ -47,7 +47,7 @@
 static inline void
 print_usage(FILE *stream, char *progname)
 {
-	fprintf(stream, "Usage: %s [-d directory directory2 ...] [-e exclude] [-l list] [-t timeout]"
+	fprintf(stream, "Usage: %s [-d directory directory2 ...] [-e exclude] [-l] [-t timeout]"
 			" [-x xml-filename] [-h] [ptest1 ptest2 ...]\n", progname);
 }
 
