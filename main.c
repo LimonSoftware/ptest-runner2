@@ -51,6 +51,26 @@ print_usage(FILE *stream, char *progname)
 			" [-x xml-filename] [-h] [ptest1 ptest2 ...]\n", progname);
 }
 
+static inline void
+print_help(FILE *stream, char *progname)
+{
+	print_usage(stream, progname);
+	fprintf(stream,
+		"\n  Runs all Yocto/Openembedded ptests installed in " DEFAULT_DIRECTORY
+		"/*/ptest/run-ptest by default.\n\n"
+		"Options:\n\n"
+		"  -d DIRS              Load tests from one or more directories. (default: " DEFAULT_DIRECTORY ")\n"
+		"                       DIRS must be a list separated by spaces.\n"
+		"  -e NAMES             Exclude specified tests from execution.\n"
+		"                       NAMES must be a list separated by spaces.\n"
+		"  -h                   This help message.\n"
+		"  -l                   List all available tests and exit.\n"
+		"  -t SECONDS           Set a timeout (in seconds) for each test. (default: %d)\n"
+		"  -x FILE              Write test results to an XML file.\n"
+		"\n", DEFAULT_TIMEOUT
+	);
+}
+
 static char **
 str2array(char *str, const char *delim, int *num)
 {
@@ -148,7 +168,7 @@ main(int argc, char *argv[])
 				opts.timeout = (unsigned int) atoi(optarg);
 			break;
 			case 'h':
-				print_usage(stdout, argv[0]);
+				print_help(stdout, argv[0]);
 				exit(0);
 			/* break; not needed, not reachable after exit() */
 			case 'x':
