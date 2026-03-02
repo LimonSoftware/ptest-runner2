@@ -498,6 +498,7 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
 				}
 
 				if (timedout) {
+					fprintf(fp, "Timeout! System state:\n");
 					collect_system_state(fp);
 				} else {
 					/*
