@@ -361,13 +361,19 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
 
 		fprintf(fp, "START: %s\n", progname);
 		PTEST_LIST_ITERATE_START(head, p)
-			char ptest_dir[PATH_MAX] = {'\0'};
+			char *ptest_dir;
+			char ptest_dir_tmp[PATH_MAX] = {'\0'};
 			int pipefd_stdout[2] = {-1, -1};
 			int pipefd_stderr[2] = {-1, -1};
 			int pty[2] = {-1, -1};
 
-			strcpy(ptest_dir, p->run_ptest);
-			dirname(ptest_dir);
+			/* Copy, since dirname() may modify its input buffer */
+			if (strlcpy(ptest_dir_tmp, p->run_ptest, sizeof(ptest_dir_tmp)) >= sizeof(ptest_dir_tmp)) {
+				fprintf(fp, "ERROR: %s exceeds PATH_MAX\n", p->run_ptest);
+				rc = -1;
+				goto ptest_list_fail1;
+			}
+			ptest_dir = dirname(ptest_dir_tmp);
 
 			if (pipe2(pipefd_stdout, 0) == -1) {
 				fprintf(fp, "ERROR: pipe2() failed with: %s.\n", strerror(errno));
