@@ -1,5 +1,14 @@
 #!/bin/sh
 # Other ideas on what to do when a ptest gets stuck welcome.
+
+echo "Collected system state:"
+
+# Use set -x to print used command.
+# Since "set -x" prints on stderr and we log stdout, redirect stderr to stdout
+# first.
+exec 2>&1
+set -x
+
 dmesg
 pstree -a -l
 df
