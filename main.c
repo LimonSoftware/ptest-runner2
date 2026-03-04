@@ -238,6 +238,13 @@ main(int argc, char *argv[])
 	for (i = 0; i < ptest_exclude_num; i++)
 		ptest_list_remove(run, opts.exclude[i], 1);
 
+	/* python programs need to use unbuffered output for our timeouts to work correctly */
+	rc = putenv("PYTHONUNBUFFERED=1");
+	if (rc) {
+		fprintf(stderr, "Couldn't putenv: %d\n", rc);
+		exit(1);
+	}
+
 	rc = run_ptests(run, opts, argv[0], stdout, stderr);
 	fprintf(stdout, "TOTAL: %d FAIL: %d\n", ptest_list_length(run), rc);
 	if (rc > 0)
