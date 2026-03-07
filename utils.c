@@ -440,11 +440,13 @@ run_ptests(struct ptest_list *head, const struct ptest_options opts,
 				set_nonblocking(pipefd_stdout[PIPE_READ]);
 				pfds[0].fd = pipefd_stdout[PIPE_READ];
 				pfds[0].events = POLLIN;
+				setlinebuf(fp);
 				dest_fps[0] = fp;
 
 				set_nonblocking(pipefd_stderr[PIPE_READ]);
 				pfds[1].fd = pipefd_stderr[PIPE_READ];
 				pfds[1].events = POLLIN;
+				setlinebuf(fp_stderr);
 				dest_fps[1] = fp_stderr;
 
 				while (true) {
